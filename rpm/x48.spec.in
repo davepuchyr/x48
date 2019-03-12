@@ -22,6 +22,7 @@ Source:         http://download.berlios.de/x48/%{name}-%{version}.tar.gz
 %setup -q
 
 %build
+CFLAGS="${CFLAGS:-%optflags} -Wno-error=format-security" \
 %configure \
 	--prefix=/usr
 make %{?_smp_mflags}
