@@ -10,7 +10,7 @@ Requires:  	libX11  libXext  readline
 BuildRequires:  autoconf libX11-devel libXext-devel readline-devel
 BuildRequires:  libXt-devel
 
-Source:         http://download.berlios.de/x48/%{name}-%{version}.tar.gz
+Source:         https://github.com/davepuchyr/x48/raw/master/%{name}-%{version}.tar.gz
 
 %description
  This is an emulator of the HP 48 SX and GX calculator.
@@ -42,5 +42,4 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/mkcard
 %{_mandir}/man1/*
 %{x11_app_defaults_dir}/X48
-
 
