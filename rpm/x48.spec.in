@@ -7,7 +7,7 @@ Group:         Applications/Math
 URL:           https://github.com/davepuchyr/x48
 BuildRoot:     %{_tmppath}/%{name}-%{version}-root
 Requires:      libX11 libXext readline
-BuildRequires: autoconf libX11-devel libXext-devel readline-devel libXt-devel
+BuildRequires: automake libX11-devel libXext-devel readline-devel libXt-devel
 
 Source:        https://github.com/davepuchyr/x48/raw/master/%{name}-%{version}.tar.gz
 
