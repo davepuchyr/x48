@@ -13,5 +13,4 @@ rm -rf $NAME_VERSION
 sudo dnf -y install ~/rpmbuild/RPMS/x86_64/$NAME_VERSION*.rpm
 mkdir -p ~/.hp48
 cp -av ROMs/* ~/.hp48
-( cd ~/.hp48 && ln -svf sxrom-j rom && ln -svf rom rom.dump && if [ ! -s hp48 ] ; then x48 -initialize ; fi )
-
+( cd ~/.hp48 && ln -svf gxrom-r rom && ln -svf rom rom.dump && if [ ! -s hp48 ] ; then x48 -initialize ; fi )
