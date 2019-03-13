@@ -1,15 +1,15 @@
-Summary:   	x48 is an HP 48 GX emulator
-Name:      	x48
-Version:   	@VERSION@
-Release:  	1
-License:	GPL
-Group:     	Applications/Math
-URL:        https://github.com/davepuchyr/x48
-BuildRoot: 	%{_tmppath}/%{name}-%{version}-root
-Requires:  	libX11  libXext  readline
-BuildRequires:  autoconf libX11-devel libXext-devel readline-devel libXt-devel
+Summary:       x48 is an HP 48 GX emulator
+Name:          x48
+Version:       @VERSION@
+Release:       1
+License:       GPL
+Group:         Applications/Math
+URL:           https://github.com/davepuchyr/x48
+BuildRoot:     %{_tmppath}/%{name}-%{version}-root
+Requires:      libX11 libXext readline
+BuildRequires: autoconf libX11-devel libXext-devel readline-devel libXt-devel
 
-Source:         https://github.com/davepuchyr/x48/raw/master/%{name}-%{version}.tar.gz
+Source:        https://github.com/davepuchyr/x48/raw/master/%{name}-%{version}.tar.gz
 
 %description
 This is an emulator of the HP 48 SX and GX calculator.
@@ -25,9 +25,9 @@ app with `x48 -initialize`.  Subsequent runs don't need the -initialize option.
 %setup -q
 
 %build
-CFLAGS="${CFLAGS:-%optflags} -Wno-error=format-security" \
+export CFLAGS="${CFLAGS:-%optflags} -Wno-error=format-security"
 %configure \
-	--prefix=/usr
+   --prefix=/usr
 make %{?_smp_mflags}
 
 %install
@@ -38,7 +38,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc	README
+%doc README
 %{_bindir}/x48
 %{_bindir}/dump2rom
 %{_bindir}/checkrom
