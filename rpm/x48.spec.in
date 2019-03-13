@@ -46,6 +46,8 @@ Terminal=false
 Type=Application
 X-Desktop-File-Install-Version=0.3
 EOF
+mkdir -p $RPM_BUILD_ROOT/usr/share/pixmaps/
+cp x48.png $RPM_BUILD_ROOT/usr/share/pixmaps/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -61,3 +63,4 @@ rm -rf $RPM_BUILD_ROOT
 %{x11_app_defaults_dir}/X48
 # https://www.redhat.com/archives/rpm-list/2003-May/msg00514.html
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/pixmaps/x48.png
