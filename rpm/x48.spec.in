@@ -12,12 +12,16 @@ BuildRequires: automake libX11-devel libXext-devel readline-devel libXt-devel
 Source:        https://github.com/davepuchyr/x48/raw/master/%{name}-%{version}.tar.gz
 
 %description
-This is an emulator of the HP 48 SX and GX calculator.
+This is an emulator of the HP 48 GX and SX calculators.
 
-Romdumps are available from https://github.com/davepuchyr/x48/tree/master/ROMs.
+The gxrom-r ROM is the default.  It can be changed by
 
-It is imperative for each user to copy the ROMs to ~/.hp48 and then initialize the
-app with `x48 -initialize`.  Subsequent runs don't need the -initialize option.
+   rm -rf ~/.hp48
+   mkdir ~/.hp48
+   cd ~/.hp48
+   ln -svf %{_datadir}/x48/other-rom ./rom
+
+and then running x48.
 
 %define x11_app_defaults_dir %(pkg-config --variable appdefaultdir xt)
 
@@ -32,35 +36,54 @@ make %{?_smp_mflags}
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT install
+mv -v $RPM_BUILD_ROOT%{_bindir}/x48 $RPM_BUILD_ROOT%{_bindir}/x48.bin
+
+cat > $RPM_BUILD_ROOT%{_bindir}/x48 <<EOS
+#!%{_bindir}/bash
+[[ -d ~/.hp48 ]] || mkdir ~/.hp48
+cd ~/.hp48
+[[ -e rom ]] || ln -svf /usr/share/x48/gxrom-r rom
+ln -svf rom rom.dump
+[[ -s hp48 ]] && x48.bin || x48.bin -initialize
+EOS
+chmod a+x $RPM_BUILD_ROOT%{_bindir}/x48
+
 # https://www.redhat.com/archives/rpm-list/2003-May/msg00514.html
 mkdir -p $RPM_BUILD_ROOT/usr/share/applications/
-cat > $RPM_BUILD_ROOT/usr/share/applications/%{name}.desktop <<'EOF'
+cat > $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop <<'EOF'
 [Desktop Entry]
 Name=x48
 Version=%{version}
 Comment=x48 is an HP 48 GX emulator
-Exec=x48
-Icon=/usr/share/pixmaps/x48.png
+Exec=%{_bindir}/x48
+Icon=%{_datadir}/pixmaps/x48.png
 Categories=Utility;
 Terminal=false
 Type=Application
 X-Desktop-File-Install-Version=0.3
 EOF
-mkdir -p $RPM_BUILD_ROOT/usr/share/pixmaps/
-cp x48.png $RPM_BUILD_ROOT/usr/share/pixmaps/
+
+mkdir -pv $RPM_BUILD_ROOT%{_datadir}/pixmaps/
+cp -v x48.png $RPM_BUILD_ROOT/%{_datadir}/pixmaps/
+
+mkdir -pv $RPM_BUILD_ROOT%{_datadir}/x48
+cp -v *xrom-* $RPM_BUILD_ROOT/%{_datadir}/x48
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+
 %files
 %defattr(-,root,root,-)
 %doc README
+%{_bindir}/x48.bin
 %{_bindir}/x48
 %{_bindir}/dump2rom
 %{_bindir}/checkrom
 %{_bindir}/mkcard
 %{_mandir}/man1/*
 %{x11_app_defaults_dir}/X48
-# https://www.redhat.com/archives/rpm-list/2003-May/msg00514.html
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/pixmaps/x48.png
+%{_datadir}/x48/*xrom-*

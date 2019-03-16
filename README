@@ -3,12 +3,15 @@
 
 Original README is [here](doc/README).
 
-If all goes well, simply running **[./fedora.sh](fedora.sh)** should build and install the x48 rpm, copy ROMs to **~/.hp48**,
-and initialize the app.  If other users want to use the app or the rpm fails to install then these key lines from the script
-must be manually run:
+If all goes well, simply running **[./fedora.sh](fedora.sh)** should build and install the x48 rpm, link to a ROM in **/usr/share/x48**,
+and initialize the app.  The app binary is wrapped by a shell script that automatically does `x48 -initialize` when necessary.  The
+initialize phase may show a seemingly non-functional calculator.  If that happens then exit the app and start it again.
 
-    mkdir -p ~/.hp48
-    cp -av ROMs/*  ~/.hp48
-    ( cd  ~/.hp48 && ln -svf gxrom-r rom && ln -svf rom rom.dump &&  if [ !  -s hp48 ] ;  then x48 -initialize ;  fi )
+The default rom is **gxrom-r**; another good choice is **sxrom-j**.  The ROM can be changed by doing
 
-The default rom is **gxrom-r**; another good choice is **sxrom-j**.
+    rm -rf ~/.hp48
+    mkdir ~/.hp48
+    cd ~/.hp48
+    ln -svf /usr/share/x48/other-rom ./rom
+
+linking to the ROM of your choice.
